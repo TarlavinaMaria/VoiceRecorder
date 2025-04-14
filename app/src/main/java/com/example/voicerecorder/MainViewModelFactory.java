@@ -20,6 +20,8 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
         AudioRepository repository = new AudioRepositoryImpl(dataSource);
         return (T) new MainViewModel(new StartRecordingUseCase(repository),
                 new StopRecordingUseCase(repository),
-                new GetRecordingsUseCase(repository));
+                new GetRecordingsUseCase(repository),
+                new DeleteRecordingUseCase(repository)
+        );
     }
 }

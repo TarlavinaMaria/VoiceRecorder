@@ -23,4 +23,9 @@ public class AudioRepositoryImpl implements AudioRepository {
     public List<Recording> getAllRecordings() {
         return localDataSource.getAllRecordings();
     }
+
+    @Override
+    public void deleteRecording(Recording recording) {
+        localDataSource.deleteRecording(recording);
+    }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.ViewHolder> {
 
     private List<Recording> recordings = new ArrayList<>();
+    private OnRecordingLongClickListener longClickListener;
     private MediaPlayer mediaPlayer = null;
     private int playingIndex = -1;
 
@@ -77,11 +78,32 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.Vi
                 e.printStackTrace();
             }
         });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onRecordingLongClicked(recording);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
     public int getItemCount() {
         return recordings.size();
+    }
+
+    public boolean isPlaying(Recording recording) {
+        return playingIndex != -1 && recordings.get(playingIndex).equals(recording);
+    }
+
+    public void stopPlayback() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+            playingIndex = -1;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -91,5 +113,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.Vi
             super(itemView);
             textView = itemView.findViewById(android.R.id.text1);
         }
+    }
+
+    public interface OnRecordingLongClickListener {
+        void onRecordingLongClicked(Recording recording);
+    }
+
+    public void setOnRecordingLongClickListener(OnRecordingLongClickListener listener) {
+        this.longClickListener = listener;
     }
 }

@@ -8,4 +8,6 @@ public interface AudioRepository {
     void stopRecording();
 
     List<Recording> getAllRecordings();
+
+    void deleteRecording(Recording recording);
 }

@@ -62,4 +62,11 @@ public class LocalAudioDataSource {
         }
         return recordings;
     }
+
+    public void deleteRecording(Recording recording) {
+        File file = new File(recording.getFilePath());
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }

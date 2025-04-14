@@ -1,5 +1,6 @@
 package com.example.voicerecorder;
 
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,5 +57,18 @@ public class MainActivity extends AppCompatActivity {
             recordingsAdapter.setData(recordings);
         });
         viewModel.loadRecordings();
+        recordingsAdapter.setOnRecordingLongClickListener(recording -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Удалить запись?")
+                    .setMessage("Точно удалить " + recording.getFileName() + "?")
+                    .setPositiveButton("Удалить", (dialog, which) -> {
+                        if (recordingsAdapter.isPlaying(recording)) {
+                            recordingsAdapter.stopPlayback();
+                        }
+                        viewModel.deleteRecording(recording);
+                    })
+                    .setNegativeButton("Отмена", null)
+                    .show();
+        });
     }
 }

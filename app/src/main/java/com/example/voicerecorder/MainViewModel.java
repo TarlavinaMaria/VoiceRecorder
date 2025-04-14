@@ -12,16 +12,18 @@ public class MainViewModel extends ViewModel {
     private final StopRecordingUseCase stopRecordingUseCase;
     private final GetRecordingsUseCase getRecordingsUseCase;
 
+    private final DeleteRecordingUseCase deleteRecordingUseCase;
     private final MutableLiveData<List<Recording>> recordings = new MutableLiveData<>();
 
     public MainViewModel(
             StartRecordingUseCase startRecordingUseCase,
             StopRecordingUseCase stopRecordingUseCase,
-            GetRecordingsUseCase getRecordingsUseCase
-    ) {
+            GetRecordingsUseCase getRecordingsUseCase,
+            DeleteRecordingUseCase deleteRecordingUseCase) {
         this.startRecordingUseCase = startRecordingUseCase;
         this.stopRecordingUseCase = stopRecordingUseCase;
         this.getRecordingsUseCase = getRecordingsUseCase;
+        this.deleteRecordingUseCase = deleteRecordingUseCase;
     }
 
     public void startRecording() {
@@ -39,5 +41,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<List<Recording>> getRecordings() {
         return recordings;
+    }
+
+    public void deleteRecording(Recording recording) {
+        deleteRecordingUseCase.execute(recording);
+        loadRecordings();
     }
 }
